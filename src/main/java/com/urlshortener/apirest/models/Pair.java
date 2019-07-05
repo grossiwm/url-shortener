@@ -2,19 +2,17 @@ package com.urlshortener.apirest.models;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 
 @Entity
 @Table(
-		name="TB_PAIR",
-		uniqueConstraints=
-		 @UniqueConstraint(columnNames= {"original"})
+		name="TB_PAIR"
 )
 public class Pair implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -23,8 +21,10 @@ public class Pair implements Serializable{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
+	@Column(unique = true)
 	private String original;
 	
+	@Column(unique = true)
 	private String shortened;
 	
 	public long getId() {
