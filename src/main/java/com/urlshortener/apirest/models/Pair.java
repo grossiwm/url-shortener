@@ -7,9 +7,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
 
 @Entity
-@Table(name="TB_PAIR")
+@Table(
+		name="TB_PAIR",
+		uniqueConstraints=
+		 @UniqueConstraint(columnNames= {"original"})
+)
 public class Pair implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
@@ -18,6 +24,9 @@ public class Pair implements Serializable{
 	private long id;
 	
 	private String original;
+	
+	private String shortened;
+	
 	public long getId() {
 		return id;
 	}
@@ -36,6 +45,6 @@ public class Pair implements Serializable{
 	public void setShortened(String shortened) {
 		this.shortened = shortened;
 	}
-	private String shortened;
+
 
 }
