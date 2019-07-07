@@ -42,14 +42,20 @@ public class PairResource {
 	
 	@PostMapping("/pair")
 	@ApiOperation(value="Save new pair.")
-	public ResponseEntity<Pair> savePair(@RequestBody @Valid Pair pair) {
-		Pair existingPair = pairRepository.findByOriginal(pair.getOriginal());
-		if (existingPair == null) {
+	public ResponseEntity<Object> savePair(@RequestBody @Valid Pair pair) {
+		
+		Pair existingPairWithOriginal = pairRepository.findByOriginal(pair.getOriginal());
+		
+		
+		if (existingPairWithOriginal != null) {
+			return ResponseEntity.badRequest()
+			.body(existingPairWithOriginal);
+		} else if (shortenedExists(pair)) {
+			return ResponseEntity.badRequest()
+			.body("Algo deu errado.");
+		} else {
 			pairRepository.save(pair);
 			return new ResponseEntity<>(pair, HttpStatus.CREATED);
-		} else {
-			return ResponseEntity.status(HttpStatus.OK)
-					.body(existingPair);
 		}
 
 	}
@@ -62,10 +68,24 @@ public class PairResource {
 	
 	@PutMapping("/pair")
 	@ApiOperation(value="Update pair.")
-	public Pair updatePair(@RequestBody @Valid Pair pair) {
-		return pairRepository.save(pair);
+	public ResponseEntity<Object> updatePair(@RequestBody @Valid Pair pair) {
+		
+		Pair existingPairWithOriginal = pairRepository.findByOriginal(pair.getOriginal());
+		
+		
+		if (existingPairWithOriginal != null) {
+			return ResponseEntity.badRequest()
+			.body(existingPairWithOriginal);
+		} else if (shortenedExists(pair)) {
+			return ResponseEntity.badRequest()
+			.body("Algo deu errado.");
+		} else {
+			pairRepository.save(pair);
+			return new ResponseEntity<>(pair, HttpStatus.OK);
+		}
+
+
 	}
-	
 	@GetMapping("/s/{shortened}")
 	public void redirectToOriginal(HttpServletResponse response, @PathVariable("shortened") String shortened) throws IOException {
 		Pair pair = pairRepository.findByShortened(shortened);
@@ -75,6 +95,10 @@ public class PairResource {
 		} else {
 			return;
 		}
+	}
+	
+	private Boolean shortenedExists(Pair pair) {
+		return pairRepository.findByShortened(pair.getShortened()) != null;
 	}
 	
 	

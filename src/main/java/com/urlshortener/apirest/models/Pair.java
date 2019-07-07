@@ -32,7 +32,7 @@ public class Pair implements Serializable{
 	private String original;
 	
 	@NotNull(message = "url encurtada não pode ser nula.")
-	@Size(min=8, max=10)
+	@Size(min=1)
 	@Column(unique = true)
 	private String shortened;
 	
