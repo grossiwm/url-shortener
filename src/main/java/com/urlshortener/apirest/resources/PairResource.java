@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,8 +42,16 @@ public class PairResource {
 	
 	@PostMapping("/pair")
 	@ApiOperation(value="Save new pair.")
-	public Pair savePair(@RequestBody @Valid Pair pair) {
-		return pairRepository.save(pair);
+	public ResponseEntity<Pair> savePair(@RequestBody @Valid Pair pair) {
+		Pair existingPair = pairRepository.findByOriginal(pair.getOriginal());
+		if (existingPair == null) {
+			pairRepository.save(pair);
+			return new ResponseEntity<>(pair, HttpStatus.CREATED);
+		} else {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(existingPair);
+		}
+
 	}
 	
 	@DeleteMapping("/pair")
