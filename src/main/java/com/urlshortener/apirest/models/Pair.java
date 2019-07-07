@@ -8,6 +8,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.URL;
 
 
 @Entity
@@ -21,9 +25,13 @@ public class Pair implements Serializable{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
+	@URL
+	@NotNull(message = "url não pode ser nula.")
+	@Size(min=6, max=2000)
 	@Column(unique = true)
 	private String original;
 	
+	@NotNull(message = "url encurtada não pode ser nula.")
 	@Column(unique = true)
 	private String shortened;
 	

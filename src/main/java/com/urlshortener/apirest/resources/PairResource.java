@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -39,7 +40,7 @@ public class PairResource {
 	
 	@PostMapping("/pair")
 	@ApiOperation(value="Save new pair.")
-	public Pair savePair(@RequestBody Pair pair) {
+	public Pair savePair(@RequestBody @Valid Pair pair) {
 		return pairRepository.save(pair);
 	}
 	
@@ -51,7 +52,7 @@ public class PairResource {
 	
 	@PutMapping("/pair")
 	@ApiOperation(value="Update pair.")
-	public Pair updatePair(@RequestBody Pair pair) {
+	public Pair updatePair(@RequestBody @Valid Pair pair) {
 		return pairRepository.save(pair);
 	}
 	
