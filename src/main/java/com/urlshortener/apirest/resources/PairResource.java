@@ -35,13 +35,13 @@ public class PairResource {
 	PairRepository pairRepository;
 	
 	@GetMapping("/pairs")
-	@ApiOperation(value="List of all url pairs.")
+	@ApiOperation(value="Lista todos os pares.")
 	public List<Pair> pairsList() {
 		return pairRepository.findAll();
 	}
 	
 	@PostMapping("/pair")
-	@ApiOperation(value="Save new pair.")
+	@ApiOperation(value="Salva novo par.")
 	public ResponseEntity<Object> savePair(@RequestBody @Valid Pair pair) {
 		
 		Pair existingPairWithOriginal = pairRepository.findByOriginal(pair.getOriginal());
@@ -60,13 +60,13 @@ public class PairResource {
 	}
 	
 	@DeleteMapping("/pair")
-	@ApiOperation(value="Delete a pair, receiving a pair as parameter.")
+	@ApiOperation(value="Recebe um par e o deleta.")
 	public void deletePair(@RequestBody Pair pair) {
 		pairRepository.delete(pair);
 	}
 	
 	@PutMapping("/pair")
-	@ApiOperation(value="Update pair.")
+	@ApiOperation(value="Atualiza um par de urls..")
 	public ResponseEntity<Object> updatePair(@RequestBody @Valid Pair pair) {
 		
 		Pair existingPairWithOriginal = pairRepository.findByOriginal(pair.getOriginal());
@@ -84,6 +84,8 @@ public class PairResource {
 
 
 	}
+	
+	@ApiOperation(value="Redireciona para url correspondente.")
 	@GetMapping("/s/{shortened}")
 	public void redirectToOriginal(HttpServletResponse response, @PathVariable("shortened") String shortened) throws IOException {
 		Pair pair = pairRepository.findByShortened(shortened);
