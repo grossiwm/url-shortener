@@ -48,8 +48,7 @@ public class PairResource {
 		
 		
 		if (existingPairWithOriginal != null) {
-			return ResponseEntity.badRequest()
-			.body(existingPairWithOriginal);
+			return new ResponseEntity<>(existingPairWithOriginal, HttpStatus.OK);
 		} else if (shortenedExists(pair)) {
 			return ResponseEntity.badRequest()
 			.body("Algo deu errado.");
@@ -74,14 +73,13 @@ public class PairResource {
 		
 		
 		if (existingPairWithOriginal != null) {
-			return ResponseEntity.badRequest()
-			.body(existingPairWithOriginal);
+			return new ResponseEntity<>(existingPairWithOriginal, HttpStatus.OK);
 		} else if (shortenedExists(pair)) {
 			return ResponseEntity.badRequest()
 			.body("Algo deu errado.");
 		} else {
 			pairRepository.save(pair);
-			return new ResponseEntity<>(pair, HttpStatus.OK);
+			return new ResponseEntity<>(pair, HttpStatus.CREATED);
 		}
 
 
