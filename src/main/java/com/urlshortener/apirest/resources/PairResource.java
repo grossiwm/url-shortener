@@ -44,6 +44,8 @@ public class PairResource {
 	@ApiOperation(value="Salva novo par.")
 	public ResponseEntity<Object> savePair(@RequestBody @Valid Pair pair) {
 		
+		pair.setOriginal(pair.getOriginal().toLowerCase());
+		
 		Pair existingPairWithOriginal = pairRepository.findByOriginal(pair.getOriginal());
 		
 		
@@ -68,6 +70,8 @@ public class PairResource {
 	@PutMapping("/pair")
 	@ApiOperation(value="Atualiza um par de urls..")
 	public ResponseEntity<Object> updatePair(@RequestBody @Valid Pair pair) {
+		
+		pair.setOriginal(pair.getOriginal().toLowerCase());
 		
 		Pair existingPairWithOriginal = pairRepository.findByOriginal(pair.getOriginal());
 		
